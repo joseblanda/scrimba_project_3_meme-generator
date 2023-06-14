@@ -6,16 +6,25 @@ export default function Meme () {
     
     //const [memeImage, setMemeImage] = React.useState("")
 
-    function getMeme () {
+    const [meme, setMeme] = React.useState({
+        topText: "", 
+        bottomText: "", 
+        randomImage: "https://i.imgflip.com/1bij.jpg"
+    })
+
+    function handleChange(event){
+        const {value, name} = event.target
+        setMeme(prevMeme => ({
+            ...prevMeme,
+            [name]: value
+        }))
+    }
+
+    function getMemeImage () {
         // console.log(memesData.data.memes[Math.floor(Math.random()*100)].url)
         setMeme(prevState => ({...prevState, randomImage: allMemeImages[Math.floor(Math.random()*100)].url}))
     }
 
-    const [meme, setMeme] = React.useState({
-        topText: "", 
-        bottomText: "", 
-        randomImage: "https://i.imgflip.com/30b1gx.jpg"
-    })
     //console.log(meme)
 
     const [allMemeImages, setAllMemeImages] = React.useState(memesData.data.memes)
@@ -23,11 +32,33 @@ export default function Meme () {
     return (
         <main>
             <div className='App-form'>
-                <input className='App-form-input' type='text' placeholder='Top Text'></input>
-                <input className='App-form-input' type='text' placeholder='Bottom Text'></input>
-                <button className='App-form-button' onClick={getMeme}>Get a new meme image 🖼</button>
+                <input 
+                    className='App-form-input' 
+                    type='text' 
+                    placeholder='Top Text'
+                    onChange={handleChange}
+                    name="topText"
+                    value={meme.topText}
+                />
+                <input 
+                    className='App-form-input' 
+                    type='text' 
+                    placeholder='Bottom Text'
+                    onChange={handleChange}
+                    name="bottomText"
+                    value={meme.bottomText}
+                />
+                <button 
+                    className='App-form-button' 
+                    onClick={getMemeImage}
+                    >Get a new meme image 🖼
+                </button>
             </div>
-            <img className='App-form-img' src={meme.randomImage}/>
+            <div className="meme">
+                <img className='App-form-img' src={meme.randomImage}/>
+                <h2 className="meme-text top">{meme.topText}</h2>
+                <h2 className="meme-text bottom">{meme.bottomText}</h2>
+            </div>
         </main>
     )
 }
